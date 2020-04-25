@@ -125,6 +125,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d5be8b422b2c6478f2cb6351ce099f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  constraint: {fileID: 0}
+  rigidBody: {fileID: 0}
+  sideConnections: []
+  transform: {fileID: 0}
+  flame: {fileID: 429216132340218670}
+  nozzle: {fileID: 429216132385180829}
 --- !u!153 &429216130968883875
 ConfigurableJoint:
   m_ObjectHideFlags: 0
