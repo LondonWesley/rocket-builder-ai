@@ -23,7 +23,7 @@ public class Builder :BasicBlock
 
         yield return new WaitForSeconds(5);
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 4; i++)
         {
             Debug.Log("Welding a new rocket module!");
 
@@ -47,11 +47,56 @@ public class Builder :BasicBlock
             }
             
         }
+        randomizeModuleSettings();
         /*BasicBlock cockpit = connectedParts[0].GetComponent<BasicBlock>();
         placeModule(cockpit, 0, 1);
         GetComponentInParent<Rigidbody>().useGravity = true;*/
       
 
+    }
+    // randomly changes all settings of blocks in the system
+    void randomizeModuleSettings()
+    {
+        for(int i = 0; i < connectedParts.Count; i++)
+        {
+            BasicBlock currentBlock = connectedParts[i].GetComponent<BasicBlock>();
+            RocketBlock rocket = currentBlock as RocketBlock;
+
+            if(rocket != null)
+            {
+                rocket.setNozzleDiameter(Random.Range(0.1f, 0.5f));
+                List<FuelBlock> sources = getFuelSources();
+                if (!sources.Count.Equals(0))
+                {
+                    for (int j = 0; j < sources.Count; j++)
+                    {
+
+                        rocket.fuelSources = getFuelSources();
+                    }
+                }
+
+            }
+            FuelBlock fuel = currentBlock as FuelBlock;
+            if(fuel != null)
+            {
+               //todosettings here
+            }
+
+        }
+    }
+
+    List<FuelBlock> getFuelSources()
+    {
+        List<FuelBlock> sources = new List<FuelBlock>();
+        for (int i = 0; i < connectedParts.Count; i++)
+        {
+            FuelBlock fuel = connectedParts[i].GetComponent<BasicBlock>() as FuelBlock;
+            if (fuel != null)
+            {
+                sources.Add(fuel);
+            }
+        }
+        return sources;
     }
 
     bool placeModule(BasicBlock targetBlockScript, int moduleNum, int side)

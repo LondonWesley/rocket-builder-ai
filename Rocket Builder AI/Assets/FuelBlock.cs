@@ -12,8 +12,8 @@ public class FuelBlock : BasicBlock
     // Start is called before the first frame update
     void Start()
     {
-        capacity = 1000;
-        gallons = 1000;
+        capacity = 100;
+        gallons = 100;
         base.Init();
     }
 
