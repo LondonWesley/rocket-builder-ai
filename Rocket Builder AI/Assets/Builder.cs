@@ -9,16 +9,27 @@ public class Builder :BasicBlock
     public List<GameObject> placeableModules;
     public List<GameObject> connectedParts;
     //saves block building sequence actions for loading later
-    public List<double[]> shipBlockData;
+    public List<float[]> shipBlockData;
     void Start()
     {
         base.Init();
-        StartCoroutine(generateShip());
+        
+        shipBlockData = new List<float[]>();
         connectedParts.Add(this.gameObject);
       
     }
+    
+    public void destroyShip()
+    {
+        for (int i = 0; i < connectedParts.Count; i++)
+            Destroy(connectedParts[i]);
+    }
 
-    IEnumerator generateShip()
+    public void generateShip()
+    {
+        StartCoroutine("generate");
+    }
+    IEnumerator generate()
     {
 
         yield return new WaitForSeconds(5);
@@ -40,6 +51,8 @@ public class Builder :BasicBlock
             {
                 connectedParts.Add(module);
                 checkAdjacentMoudules();
+                float[] data = {blockType, attachTo, sideChosen, 0, 0 };
+                shipBlockData.Add(data);
             }
             else
             {
@@ -55,6 +68,26 @@ public class Builder :BasicBlock
 
     }
     // randomly changes all settings of blocks in the system
+
+    public void loadShipData(List<float[]> shipData)
+    {
+        Debug.Log("Attempting load");
+        StartCoroutine("loadShip", shipData);
+    }
+    IEnumerable loadShip(List<float[]> shipData)
+    {
+        yield return new WaitForSeconds(5);
+        Debug.Log("Courinte waited");
+        for (int i = 0; i < shipData.Count; i++)
+        {
+            int targetIndex = (int) shipData[i][1];
+            int blockType = (int) shipData[i][0];
+            int sidechosen = (int)shipData[i][2];
+            Debug.Log("Placing block");
+            BasicBlock target = connectedParts[targetIndex].GetComponent<BasicBlock>();
+            placeModule(target, blockType, sidechosen);
+        }
+    }
     void randomizeModuleSettings()
     {
         for(int i = 0; i < connectedParts.Count; i++)
@@ -64,7 +97,9 @@ public class Builder :BasicBlock
 
             if(rocket != null)
             {
-                rocket.setNozzleDiameter(Random.Range(0.1f, 0.5f));
+                float nozzleDiam = Random.Range(0.1f, 0.5f);
+                shipBlockData[i][3] = nozzleDiam;
+                rocket.setNozzleDiameter(nozzleDiam);
                 List<FuelBlock> sources = getFuelSources();
                 if (!sources.Count.Equals(0))
                 {

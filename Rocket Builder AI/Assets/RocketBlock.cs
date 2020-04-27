@@ -46,9 +46,10 @@ public class RocketBlock : BasicBlock
             else
             {
                 fuelSources.Remove(fuelSources[fuelSources.Count - 1]);
-                flame.SetActive(false);
-                Debug.Log("No fuel");
             }
+        } else
+        {
+            flame.SetActive(false);
         }
     }
     void FixedUpdate()
