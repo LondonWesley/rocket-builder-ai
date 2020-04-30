@@ -5,12 +5,17 @@ using UnityEngine;
 public class Trainer : MonoBehaviour
 {
     public AISolution bestSolution;
+    public GameObject cam;
     public GameObject clone;
     public List<List<AISolution>> generations;
     public int currentGeneration = 0;
     public int solutionsPerGen = 10;
     public int numGenerations = 50;
     public int solutionNum = 0;
+    public UnityEngine.UI.Text record;
+    public UnityEngine.UI.Text height;
+    public float zoom = 40;
+    public bool replay;
     private int k = 4;
     public AISolution currentSolution;
     void Start()
@@ -35,6 +40,7 @@ public class Trainer : MonoBehaviour
                 List<AISolution> generation = new List<AISolution>();
                 AISolution solution = generateSolution().GetComponent<AISolution>();
                 solution.builder.parts = k;
+                solution.builder.replay = this.replay;
                 currentSolution = solution;
                 generation.Add(solution);
                 solution.builder.generateShip();
@@ -59,6 +65,7 @@ public class Trainer : MonoBehaviour
 
                     AISolution solution = generateSolution().GetComponent<AISolution>();
                     currentSolution = solution;
+                    solution.builder.replay = this.replay;
                     List<float[]> bestShipData = bestSolution.shipBlockData;
                     for (int i = 0; i < bestShipData.Count; i++)
                     {
@@ -104,9 +111,14 @@ public class Trainer : MonoBehaviour
             if (!currentSolution.running)
             {
                 getBestSolution();
+                record.text = "Record: " + bestSolution.fitnessScore + "m";
                 train();
             }
+
+            cam.transform.position = currentSolution.Cockpit.transform.position + new Vector3(0,0,-zoom);
+            height.text = "Height: " + currentSolution.fitnessScore + "m";
             
+
         }   
     }
 }

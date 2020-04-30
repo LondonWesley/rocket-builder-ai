@@ -11,6 +11,7 @@ public class Builder :BasicBlock
     //saves block building sequence actions for loading later
     public List<float[]> shipBlockData;
     public int parts = 4;
+    public bool replay;
     void Start()
     {
         base.Init();
@@ -132,7 +133,8 @@ public class Builder :BasicBlock
             Debug.Log("nozzle Diameter loaded is " + nozzleDiam);
             placeModule(target, blockType, sidechosen, nozzleDiam, consumeRate);
         }
-        mutate(3, shipBlockData);
+        if (replay != true)
+            mutate(3, shipBlockData);
         connectEngines();
 
     }
