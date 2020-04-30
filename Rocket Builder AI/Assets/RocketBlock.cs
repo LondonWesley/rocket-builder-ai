@@ -40,7 +40,7 @@ public class RocketBlock : BasicBlock
             if (fuelSources[fuelSources.Count - 1].burn(0.01f))
             {
                 //Debug.Log("BURNING");
-                rigidBody.AddForce(transform.up * 200000f * Time.fixedDeltaTime);
+                rigidBody.AddForce(transform.up * 20000f * Time.fixedDeltaTime);
                 flame.SetActive(true);
             }
 

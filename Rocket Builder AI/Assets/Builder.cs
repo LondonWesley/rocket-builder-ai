@@ -118,7 +118,7 @@ public class Builder :BasicBlock
     {
         Debug.Log("Courinte waiteing?");
         yield return new WaitForSeconds(5);
-        shipBlockData = shipData;
+        shipBlockData = new List<float[]>(shipData);
         Debug.Log("Courinte waited");
         for (int i = 0; i < shipData.Count; i++)
         {
@@ -132,7 +132,7 @@ public class Builder :BasicBlock
             Debug.Log("nozzle Diameter loaded is " + nozzleDiam);
             placeModule(target, blockType, sidechosen, nozzleDiam, consumeRate);
         }
-        mutate(10, shipData);
+        mutate(3, shipBlockData);
         connectEngines();
 
     }
