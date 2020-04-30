@@ -23,6 +23,7 @@ public class AISolution : MonoBehaviour
         if(Cockpit != null)
         {
             float height = Cockpit.transform.position.y;
+            shipBlockData = builder.getShipBlockData();
             if (height > fitnessScore)
             {
                 fitnessScore = height;
@@ -30,7 +31,7 @@ public class AISolution : MonoBehaviour
             {
                 if (height < fitnessScore - 30)
                 {
-                    shipBlockData = builder.shipBlockData;
+                    //shipBlockData = builder.getShipBlockData();
                     builder.destroyShip();
                     running = false;
 

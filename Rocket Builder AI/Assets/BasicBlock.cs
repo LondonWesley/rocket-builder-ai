@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /*
@@ -19,8 +20,11 @@ public class BasicBlock : MonoBehaviour
     //TODO: CREATE METAL MATERIAL OPTIONS
 
     bool full = false;
-
     public void Init()
+    {
+
+    }
+    public void Awake()
     {
         
         sideConnections = new BasicBlock[6];
@@ -118,6 +122,16 @@ public class BasicBlock : MonoBehaviour
             return false;
         }
     }
+
+    public void displayConnections()
+    {
+        Debug.Log("::::"+this.name);
+        for(int i = 0; i < sideConnections.Length; i++)
+        {
+            //Debug.Log(sideConnections[i]);
+        }
+    }
+
     private void weld(BasicBlock targetBlock)
     {
         constraint.connectedBody = targetBlock.rigidBody;
@@ -130,67 +144,168 @@ public class BasicBlock : MonoBehaviour
     }
     public void checkAdjacentMoudules()
     {
+        Debug.Log(this.name + ": checkingadjacents");
         RaycastHit checker;
 
         if (Physics.Raycast(transform.position, Vector3.up, out checker, 2f))
         {
-            if (checker.collider.gameObject.GetComponent<BasicBlock>() != null)
+            Debug.Log(this.name + " :Detect :" + checker.collider.gameObject.name);
+            if (checker.collider.gameObject.GetComponent<BasicBlock>() != null || checker.collider.gameObject.GetComponent<RocketBlock>() != null || checker.collider.gameObject.GetComponent<FuelBlock>() != null)
             {
                 Debug.DrawRay(transform.position, Vector3.up * checker.distance, Color.red);
                 BasicBlock adjacentBlock = checker.collider.gameObject.GetComponent<BasicBlock>();
-                sideConnections[0] = adjacentBlock;
-                adjacentBlock.sideConnections[1] = this;
+                RocketBlock rocket = checker.collider.gameObject.GetComponent<RocketBlock>();
+                FuelBlock fuel = checker.collider.gameObject.GetComponent<FuelBlock>();
+                if(rocket!= null)
+                {
+                    sideConnections[0] = rocket;
+                    rocket.sideConnections[1] = this;
+                } else
+                if(fuel!= null)
+                {
+                    sideConnections[0] = fuel;
+                    fuel.sideConnections[1] = this;
+                } else
+                if(adjacentBlock != null)
+                {
+                    sideConnections[0] = adjacentBlock;
+                    adjacentBlock.sideConnections[1] = this;
+                }
+                
             }
         }
         if (Physics.Raycast(transform.position, -Vector3.up, out checker, 2f))
         {
-            if (checker.collider.gameObject.GetComponent<BasicBlock>() != null)
-            {
+             Debug.Log(this.name + " :Detect :" + checker.collider.gameObject.name);
+            if (checker.collider.gameObject.GetComponent<BasicBlock>() != null || checker.collider.gameObject.GetComponent<RocketBlock>() != null || checker.collider.gameObject.GetComponent<FuelBlock>() != null)
+                {
                 Debug.DrawRay(transform.position, -Vector3.up * checker.distance, Color.green);
                 BasicBlock adjacentBlock = checker.collider.gameObject.GetComponent<BasicBlock>();
-                sideConnections[1] = adjacentBlock;
-                adjacentBlock.sideConnections[0] = this;
+                RocketBlock rocket = checker.collider.gameObject.GetComponent<RocketBlock>();
+                FuelBlock fuel = checker.collider.gameObject.GetComponent<FuelBlock>();
+                if (rocket != null)
+                {
+                    sideConnections[1] = rocket;
+                    rocket.sideConnections[0] = this;
+                } else 
+                if (fuel != null)
+                {
+                    sideConnections[1] = fuel;
+                    fuel.sideConnections[0] = this;
+                } else
+                if (adjacentBlock != null)
+                {
+                    sideConnections[1] = adjacentBlock;
+                    adjacentBlock.sideConnections[0] = this;
+                }
+                
             }
         }
         if (Physics.Raycast(transform.position, -Vector3.right, out checker, 2f))
         {
-            
-            if (checker.collider.gameObject.GetComponent<BasicBlock>() != null)
-            {
+             Debug.Log(this.name + " :Detect :" + checker.collider.gameObject.name);
+            if (checker.collider.gameObject.GetComponent<BasicBlock>() != null || checker.collider.gameObject.GetComponent<RocketBlock>() != null || checker.collider.gameObject.GetComponent<FuelBlock>() != null)
+                {
                 Debug.DrawRay(transform.position, -Vector3.right * checker.distance, Color.blue);
-                BasicBlock adjacentBlock = checker.rigidbody.gameObject.GetComponent<BasicBlock>();
-                sideConnections[2] = adjacentBlock;
-                adjacentBlock.sideConnections[3] = this;
+                BasicBlock adjacentBlock = checker.collider.gameObject.GetComponent<BasicBlock>();
+                RocketBlock rocket = checker.collider.gameObject.GetComponent<RocketBlock>();
+                FuelBlock fuel = checker.collider.gameObject.GetComponent<FuelBlock>();
+                if (rocket != null)
+                {
+                    sideConnections[2] = rocket;
+                    rocket.sideConnections[3] = this;
+                } else
+                if (fuel != null)
+                {
+                    sideConnections[2] = fuel;
+                    fuel.sideConnections[3] = this;
+                } else 
+                if (adjacentBlock != null)
+                {
+                    sideConnections[2] = adjacentBlock;
+                    adjacentBlock.sideConnections[3] = this;
+                }
             }
         }
         if (Physics.Raycast(transform.position, Vector3.right, out checker, 2f))
         {
-            if (checker.collider.gameObject.GetComponent<BasicBlock>() != null)
+             Debug.Log(this.name + " :Detect :" + checker.collider.gameObject.name);
+            if (checker.collider.gameObject.GetComponent<BasicBlock>() != null || checker.collider.gameObject.GetComponent<RocketBlock>() != null || checker.collider.gameObject.GetComponent<FuelBlock>() != null)
             {
                 Debug.DrawRay(transform.position, Vector3.right * checker.distance, Color.yellow);
                 BasicBlock adjacentBlock = checker.collider.gameObject.GetComponent<BasicBlock>();
-                sideConnections[3] = adjacentBlock;
-                adjacentBlock.sideConnections[2] = this;
+                RocketBlock rocket = checker.collider.gameObject.GetComponent<RocketBlock>();
+                FuelBlock fuel = checker.collider.gameObject.GetComponent<FuelBlock>();
+                if (rocket != null)
+                {
+                    sideConnections[3] = rocket;
+                    rocket.sideConnections[2] = this;
+                } else
+                if (fuel != null)
+                {
+                    sideConnections[3] = fuel;
+                    fuel.sideConnections[2] = this;
+                } else
+                if (adjacentBlock != null)
+                {
+                    sideConnections[3] = adjacentBlock;
+                    adjacentBlock.sideConnections[2] = this;
+                }
+               
             }
         }
         if (Physics.Raycast(transform.position, Vector3.forward, out checker, 2f))
         {
-            if (checker.collider.gameObject.GetComponent<BasicBlock>() != null)
+             Debug.Log(this.name + " :Detect :" + checker.collider.gameObject.name);
+            if (checker.collider.gameObject.GetComponent<BasicBlock>() != null || checker.collider.gameObject.GetComponent<RocketBlock>() != null || checker.collider.gameObject.GetComponent<FuelBlock>() != null)
             {
                 Debug.DrawRay(transform.position, Vector3.forward * checker.distance, Color.cyan);
                 BasicBlock adjacentBlock = checker.collider.gameObject.GetComponent<BasicBlock>();
-                sideConnections[5] = adjacentBlock;
-                adjacentBlock.sideConnections[4] = this;
+                RocketBlock rocket = checker.collider.gameObject.GetComponent<RocketBlock>();
+                FuelBlock fuel = checker.collider.gameObject.GetComponent<FuelBlock>();
+                if (rocket != null)
+                {
+                    sideConnections[5] = rocket;
+                    rocket.sideConnections[4] = this;
+                } else 
+                if (fuel != null)
+                {
+                    sideConnections[5] = fuel;
+                    fuel.sideConnections[4] = this;
+                } else
+                if (adjacentBlock != null)
+                {
+                    sideConnections[5] = adjacentBlock;
+                    adjacentBlock.sideConnections[4] = this;
+                }
+               
             }
         }
         if (Physics.Raycast(transform.position, -Vector3.forward, out checker, 2f))
         {
-            if (checker.collider.gameObject.GetComponent<BasicBlock>() != null)
+             Debug.Log(this.name + " :Detect :" + checker.collider.gameObject.name);
+            if (checker.collider.gameObject.GetComponent<BasicBlock>() != null || checker.collider.gameObject.GetComponent<RocketBlock>() != null || checker.collider.gameObject.GetComponent<FuelBlock>() != null)
             {
                 Debug.DrawRay(transform.position, -Vector3.forward * checker.distance, Color.white);
                 BasicBlock adjacentBlock = checker.collider.gameObject.GetComponent<BasicBlock>();
-                sideConnections[4] = adjacentBlock;
-                adjacentBlock.sideConnections[5] = this;
+                RocketBlock rocket = checker.collider.gameObject.GetComponent<RocketBlock>();
+                FuelBlock fuel = checker.collider.gameObject.GetComponent<FuelBlock>();
+
+                if (rocket != null)
+                {
+                    sideConnections[4] = rocket;
+                    rocket.sideConnections[5] = this;
+                } else
+                if (fuel != null)
+                {
+                    sideConnections[4] = fuel;
+                    fuel.sideConnections[5] = this;
+                } else
+                if (adjacentBlock != null)
+                {
+                    sideConnections[4] = adjacentBlock;
+                    adjacentBlock.sideConnections[5] = this;
+                }
             }
         }
     }

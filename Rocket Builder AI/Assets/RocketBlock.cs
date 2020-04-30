@@ -5,8 +5,8 @@ using UnityEngine;
 public class RocketBlock : BasicBlock
 {
     // Start is called before the first frame update
-    float nozzleDiameter = 1f;
-    float fuelConsumeRate = 0.1f;
+    public float nozzleDiameter = 1f;
+    public float fuelConsumeRate = 0.1f;
     public List<FuelBlock> fuelSources;
     public GameObject flame;
     public GameObject nozzle;
@@ -20,7 +20,8 @@ public class RocketBlock : BasicBlock
     public void setNozzleDiameter( float diameter)
     {
         nozzleDiameter = diameter;
-        nozzle.transform.localScale = new Vector3(diameter, 0.5f, diameter);
+        nozzle.transform.localScale = new Vector3(diameter/10, 0.5f, diameter/10);
+        Debug.Log("setting diam to" + diameter);
     }
     public void setFuelConsumeRate(float rate)
     {
@@ -34,11 +35,11 @@ public class RocketBlock : BasicBlock
     {
         if (!fuelSources.Count.Equals(0))
         {
-            Debug.Log("FUEL SOURCE FOUND!");
+            //Debug.Log("FUEL SOURCE FOUND!");
 
-            if (fuelSources[fuelSources.Count - 1].burn(fuelConsumeRate))
+            if (fuelSources[fuelSources.Count - 1].burn(0.01f))
             {
-                Debug.Log("BURNING");
+                //Debug.Log("BURNING");
                 rigidBody.AddForce(transform.up * 200000f * Time.fixedDeltaTime);
                 flame.SetActive(true);
             }

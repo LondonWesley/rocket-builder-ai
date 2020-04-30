@@ -8,9 +8,10 @@ public class Trainer : MonoBehaviour
     public GameObject clone;
     public List<List<AISolution>> generations;
     public int currentGeneration = 0;
-    public int solutionsPerGen = 3;
-    public int numGenerations = 2;
+    public int solutionsPerGen = 10;
+    public int numGenerations = 50;
     public int solutionNum = 0;
+    private int k = 4;
     public AISolution currentSolution;
     void Start()
     {
@@ -28,19 +29,22 @@ public class Trainer : MonoBehaviour
     {
         if (currentGeneration == 0)
         {
-            if (solutionNum < solutionsPerGen)
+            if ((solutionNum < solutionsPerGen) && (currentGeneration < numGenerations))
             {
-                solutionNum++;
+                
                 List<AISolution> generation = new List<AISolution>();
                 AISolution solution = generateSolution().GetComponent<AISolution>();
+                solution.builder.parts = k;
                 currentSolution = solution;
                 generation.Add(solution);
                 solution.builder.generateShip();
+                solutionNum++;
                 //TODO fix this generation tracking system its bad.
             }
             else
             {
                 currentGeneration++;
+                //k+=4;
                 solutionNum = 0;
                 Debug.Log("Inital Generation finished!");
             }
@@ -75,7 +79,7 @@ public class Trainer : MonoBehaviour
                     solutionNum = 0;
                 }
             }
-        }
+        } 
     }
     void getBestSolution()
     {
@@ -86,7 +90,10 @@ public class Trainer : MonoBehaviour
         else
         {
             if (currentSolution.fitnessScore > bestSolution.fitnessScore)
+            {
+                Debug.Log("New Best solution found!");
                 bestSolution = currentSolution;
+            }
         }
     }
     // Update is called once per frame
@@ -96,9 +103,10 @@ public class Trainer : MonoBehaviour
         {
             if (!currentSolution.running)
             {
-                train();
                 getBestSolution();
+                train();
             }
+            
         }   
     }
 }
